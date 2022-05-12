@@ -3,6 +3,7 @@ import { useState } from "react";
 import ReactDOM from 'react-dom';
 import Axios from 'axios';
 import { makeStyles } from '@mui/material';
+import Navbar from '../components/Navbar';
 
 
 const LoginPage = () => {
@@ -34,23 +35,27 @@ const LoginPage = () => {
 
     return (
         <>
+            <Navbar />
+            <div className='container position-relative'>
+                <div className="col " style={{ alignItems: 'center' }}>
+                    <h1 className='row postion-absolute ' style={{ color: 'rgb(118,185,0)' }}>Login</h1>
 
-            <div>
-                <h1>Login</h1>
-                <input
-                    placeholder="username"
-                    onChange={(e) => setLoginUsername(e.target.value)}
-                />
-                <input
-                    placeholder="password"
-                    onChange={(e) => setLoginPassword(e.target.value)}
-                />
-                <button onClick={login}>Submit</button>
-            </div>
-            <div>
-                <h1>Get User</h1>
-                <button onClick={getUser}>Submit</button>
-                {data ? <h1>Welcome Back {data.username}</h1> : null}
+                    <div className="row" style={{ marginTop: '70px' }}></div>
+                    <input
+                        className='row '
+                        placeholder="username"
+                        style={{ textAlign: 'center', alignItems: 'center' }}
+                        onChange={(e) => setLoginUsername(e.target.value)}
+                    />
+                    <div className="row" style={{ marginTop: '20px' }}></div>
+                    <input
+                        className='row'
+                        placeholder="password"
+                        onChange={(e) => setLoginPassword(e.target.value)}
+                    />
+                    <div className="row" style={{ marginTop: '20px' }}></div>
+                    <button className='row' onClick={login}>Submit</button>
+                </div>
             </div>
         </>
     )

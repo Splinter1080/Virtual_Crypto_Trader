@@ -4,26 +4,28 @@ import ReactDOM from 'react-dom';
 import axios from 'axios';
 import { useHistory, useParams } from "react-router-dom";
 import { Button, Row } from 'react-bootstrap';
+import CoinInfo from '../components/CoinInfo';
+import Navbar from '../components/Navbar';
 
-const LoginPage = () => {
+const CoinPage = () => {
     const history = useHistory();
     const { CoinName } = useParams();
     //console.log(history.location.pathname, CoinName);
     const currency = "USD";
     const [coin, setCoin] = useState();
-    const [flag, setflag] = useState(false);
-    const [amount, setAmount] = useState(0);
-    const [investedMoney, setInvestedMoney] = useState(0);
+    const [flag, setFlag] = useState(false);
+    const [investedAmount, setInvestedAmount] = useState(0);
+    const [investedValue, setInvestedValue] = useState(0);
     const [sellMoney, setSellMoney] = useState(0);
-
+    const [sellAmount, setSellAmount] = useState(0);
     const handleBuyClick = async () => {
-        console.log(coin.market_data.current_price.usd);
+        console.log(investedValue / coin.market_data.current_price.usd, CoinName, investedValue, parseInt(coin.market_data.current_price.usd));
         axios({
             method: "POST",
             data: {
-                amount: investedMoney / coin.market_data.current_price.usd,
+                amount: investedValue / coin.market_data.current_price.usd,
                 coinName: CoinName,
-                investedMoney: investedMoney,
+                investedValue: investedValue,
                 price: parseInt(coin.market_data.current_price.usd),
             },
             withCredentials: true,
@@ -32,7 +34,7 @@ const LoginPage = () => {
 
     }
     const handleSellClick = async () => {
-        console.log(coin.market_data.current_price.usd);
+        //console.log(coin.market_data.current_price.usd);
         axios({
             method: "POST",
             data: {
@@ -47,7 +49,7 @@ const LoginPage = () => {
 
     }
     const handleDetailClick = async () => {
-        console.log("Getting details");
+        //console.log("Getting details");
         axios({
             method: "GET",
             withCredentials: true,
@@ -62,9 +64,10 @@ const LoginPage = () => {
             .catch((err) => {
                 console.log(err);
             });
+
         setCoin(data);
-        setflag(true);
-        //console.log(data);    data of coin
+        setFlag(true);
+        //console.log(data);   // data of coin
     }
     useEffect(() => {
         fetchCoin();
@@ -77,39 +80,70 @@ const LoginPage = () => {
 
 
     return (
-        <div >
-            <Row className="mx-0">
-                <Button variant="primary">Button #1</Button>
-                <Button variant="secondary" className="mx-2">Button #2</Button>
-                <Button variant="success">Button #3</Button>
-            </Row>
-            <h1>{CoinName}</h1>
+
+        <div className='conatainer position-relative'>
+            <Navbar />
+
             {
                 flag &&
-                <div>
-                    <h3><a href={`/coin/${coin.id}`}> {coin.id}</a> - ${coin.market_data.current_price.usd} </h3>
-                    {/* <img src={coin.image} alt={coin.id}  /> */}
-                </div>
-            }
-            {
-                <div>
-                    <h1>Buy</h1>
-                    <input
-                        placeholder="investedMoney"
-                        onChange={(e) => setInvestedMoney(e.target.value)}
-                    />
-                    <button onClick={handleBuyClick}>Submit</button>
-                </div>
-            }
-            {
-                <div>
-                    <h1>Sell</h1>
-                    <input
-                        placeholder="sellMoney"
-                        onChange={(e) => setSellMoney(e.target.value)}
-                    />
-                    <button onClick={handleSellClick}>Submit</button>
-                </div>
+                <>
+                    <div className='conatiner position-relative'>
+
+                        <div className='row' style={{ width: '100%' }}>
+                            <h1 style={{ color: 'rgb(118, 185, 0)', textAlign: 'center' }}>
+                                <img className='img-fluid' style={
+                                    { width: '65px', height: '65px', marginRight: '8px' }
+                                } src={coin.image.large} alt={CoinName} />
+                                {CoinName.toUpperCase()}<h3 style={{ color: 'wheat', textAlign: 'center' }}>Price : ${coin.market_data.current_price.usd}</h3>
+                            </h1>
+                        </div>
+                        <div className='row position-relative' style={{ width: '100%' }}>
+                            <div className='col-2' style={{ marginLeft: "50px" }}>
+                                <div className='row'>
+                                    <h1 style={{ color: 'green' }}>Buy</h1>
+                                    <input
+                                        placeholder={investedAmount || "Amount"}
+                                        onChange={(e) => {
+                                            setInvestedAmount(e.target.value);
+                                            setInvestedValue(e.target.value * coin.market_data.current_price.usd);
+                                        }}
+                                    />
+                                    <input
+                                        placeholder={investedValue || "Value in $"}
+                                        onChange={(e) => {
+                                            setInvestedValue(e.target.value);
+                                            setInvestedAmount(e.target.value / coin.market_data.current_price.usd);
+                                        }}
+                                    />
+                                    <button className='btn btn-secondary' onClick={handleBuyClick}>Buy</button>
+                                </div>
+                                <div className='row'>
+                                    <h1 style={{ color: 'rgb(252, 27, 32)' }}>Sell</h1>
+                                    <input
+                                        placeholder={sellAmount || "Amount"}
+                                        onChange={(e) => {
+                                            setSellAmount(e.target.value)
+                                            setSellMoney(e.target.value * coin.market_data.current_price.usd);
+                                        }}
+                                    />
+                                    <input
+                                        placeholder={sellMoney || "Value in $"}
+                                        onChange={(e) => {
+                                            setSellMoney(e.target.value);
+                                            setSellAmount(e.target.value / coin.market_data.current_price.usd);
+                                        }}
+                                    />
+                                    <button className='btn btn-secondary' onClick={handleSellClick}>Sell</button>
+                                </div>
+                            </div>
+                            <div className='col-9' >
+                                <div style={{ marginTop: '20px' }}>
+                                    <CoinInfo Coin={CoinName} style={{ width: '100%' }} />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </>
             }
             {
                 flag &&
@@ -118,7 +152,9 @@ const LoginPage = () => {
                     <button onClick={handleDetailClick}>Get Details</button>
                 </div>
             }
+
         </div>
+
     )
 }
-export default LoginPage;
+export default CoinPage;

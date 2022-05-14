@@ -36,8 +36,8 @@ const LoginPage = () => {
     return (
         <>
             <Navbar />
-            <div className='container position-relative'>
-                <div className="col " style={{ alignItems: 'center' }}>
+            <div className='container'>
+                <div className="col-6" style={{ alignItems: 'center' }}>
                     <h1 className='row postion-absolute ' style={{ color: 'rgb(118,185,0)' }}>Login</h1>
 
                     <div className="row" style={{ marginTop: '70px' }}></div>
@@ -51,6 +51,7 @@ const LoginPage = () => {
                     <input
                         className='row'
                         placeholder="password"
+                        style={{ textAlign: 'center', alignItems: 'center' }}
                         onChange={(e) => setLoginPassword(e.target.value)}
                     />
                     <div className="row" style={{ marginTop: '20px' }}></div>

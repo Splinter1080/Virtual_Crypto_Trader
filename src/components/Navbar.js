@@ -13,6 +13,7 @@ function Navbar() {
                         <a className="nav-link" aria-current="page" href="/marketplace">MarketPlace</a>
                         <a className="nav-link" href="/login">Login</a>
                         <a className="navbar-nav nav nav-link float-end" href="/register">Register</a>
+                        <a className="navbar-nav nav nav-link float-end" href="/leaderboard">Leaderboard</a>
                     </div>
                 </div>
             </div>

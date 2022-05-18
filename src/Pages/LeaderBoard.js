@@ -35,10 +35,6 @@ const LeaderBoard = () => {
                 </form>
             </nav>
             <h1 style={{ color: 'white', textAlign: 'center' }}>LeaderBoard</h1>
-            <div style={{ height: "10px" }}>
-                <TrinitySpinner color="wheat" style={{ Height: "10px" }} />
-
-            </div>
             <div>
                 {
                     flag &&

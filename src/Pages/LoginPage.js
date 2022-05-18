@@ -4,13 +4,15 @@ import ReactDOM from 'react-dom';
 import Axios from 'axios';
 import { makeStyles } from '@mui/material';
 import Navbar from '../components/Navbar';
-
+import { useHistory } from "react-router-dom";
 
 const LoginPage = () => {
     const [LoginUsername, setLoginUsername] = useState("");
     const [email, setEmail] = useState("");
     const [LoginPassword, setLoginPassword] = useState("");
-    const [data, setData] = useState(null);
+    const [username, setUserName] = useState(null);
+    const [loginFlag, setLoginFlag] = useState(false);
+    const history = useHistory();
     const login = () => {
         Axios({
             method: "POST",
@@ -20,16 +22,10 @@ const LoginPage = () => {
             },
             withCredentials: true,
             url: "http://localhost:5000/login",
-        }).then((res) => console.log(res));
-    };
-    const getUser = () => {
-        Axios({
-            method: "GET",
-            withCredentials: true,
-            url: "http://localhost:5000/user",
         }).then((res) => {
-            setData(res.data);
             console.log(res.data);
+            setUserName(res.data.username);
+            setLoginFlag(true);
         });
     };
 
@@ -37,26 +33,40 @@ const LoginPage = () => {
         <>
             <Navbar />
             <div className='container'>
-                <div className="col-6" style={{ alignItems: 'center' }}>
-                    <h1 className='row postion-absolute ' style={{ color: 'rgb(118,185,0)' }}>Login</h1>
+                {
+                    loginFlag &&
+                    <div className='alert alert-success' role='alert'>
+                        <h4 className='alert-heading'>Login Successful!</h4>
+                        <p>Welcome {username}</p>
+                        <hr />
+                        <p className='mb-0'>Click Here to go <a href="/">HOME PAGE!</a></p>
+                    </div>
 
-                    <div className="row" style={{ marginTop: '70px' }}></div>
-                    <input
-                        className='row '
-                        placeholder="username"
-                        style={{ textAlign: 'center', alignItems: 'center' }}
-                        onChange={(e) => setLoginUsername(e.target.value)}
-                    />
-                    <div className="row" style={{ marginTop: '20px' }}></div>
-                    <input
-                        className='row'
-                        placeholder="password"
-                        style={{ textAlign: 'center', alignItems: 'center' }}
-                        onChange={(e) => setLoginPassword(e.target.value)}
-                    />
-                    <div className="row" style={{ marginTop: '20px' }}></div>
-                    <button className='row' onClick={login}>Submit</button>
-                </div>
+                }
+                {
+                    !loginFlag &&
+                    <div className="col-6" style={{ alignItems: 'center' }}>
+                        <h1 className='row postion-absolute ' style={{ color: 'rgb(118,185,0)' }}>Login</h1>
+
+                        <div className="row" style={{ marginTop: '70px' }}></div>
+                        <input
+                            className='row '
+                            placeholder="username"
+                            style={{ textAlign: 'center', alignItems: 'center' }}
+                            onChange={(e) => setLoginUsername(e.target.value)}
+                        />
+                        <div className="row" style={{ marginTop: '20px' }}></div>
+                        <input
+                            className='row'
+                            placeholder="password"
+                            style={{ textAlign: 'center', alignItems: 'center' }}
+                            onChange={(e) => setLoginPassword(e.target.value)}
+                        />
+                        <div className="row" style={{ marginTop: '20px' }}></div>
+                        <button className='row' onClick={login}>Submit</button>
+                    </div>
+                }
+
             </div>
         </>
     )

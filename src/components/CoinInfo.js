@@ -76,6 +76,7 @@ const CoinInfo = ({ Coin }) => {
                     <div className="container">
                         <div className="row">
                             <div className="d-flex" style={{ width: "20%", float: "center" }}>
+                                <h4 style={{ color: "wheat" }}>Time Frame</h4>
                                 <select className="form-control mr-2 gold" onChange={day => ChangeDate(parseInt(day.target.value))}>
                                     <option value="1" >1 Day</option>
                                     <option value="30">30 Days</option>

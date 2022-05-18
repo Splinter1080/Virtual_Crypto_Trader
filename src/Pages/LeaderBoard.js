@@ -14,7 +14,7 @@ const LeaderBoard = () => {
                 console.log(err);
             });
         setUsers(data);
-        //setflag(true);
+        setflag(true);
         console.log(data);
     }
     useEffect(() => {

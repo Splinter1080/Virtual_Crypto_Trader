@@ -7,6 +7,8 @@ import CoinPage from './Pages/CoinPage';
 import { BrowserRouter, Route } from 'react-router-dom';
 import bootstrap from 'bootstrap/dist/css/bootstrap.css';
 import LeaderBoard from './Pages/LeaderBoard';
+import ProfilePage from './Pages/ProfilePage';
+
 
 function App() {
   return (
@@ -18,6 +20,7 @@ function App() {
         <Route path="/register/" component={RegisterPage} exact />
         <Route path="/login/" component={LoginPage} exact />
         <Route path="/leaderboard/" component={LeaderBoard} exact />
+        <Route path="/profile/" component={ProfilePage} exact />
         {/* <Route path="/coins/:id" component={CoinPage} exact /> */}
       </div>
     </BrowserRouter>

@@ -15,7 +15,7 @@ const HomePage = () => {
                     </div>
                 </div>
             </div>
-            <div className="container">
+            <div className="card bg-dark" style={{ borderColor: "white" }}>
                 <div className="row align-items-center">
                     <div className="col">
                         <img src={imgLink} className='rounded mx-auto d-block float-start' style={{ height: '400px', width: '400px' }} alt="image-loading" />
@@ -28,7 +28,8 @@ const HomePage = () => {
                     </div>
                 </div>
             </div>
-            <div className="conatiner">
+            <div className="row" style={{ marginTop: '50px' }}></div>
+            <div className="card bg-dark" style={{ borderColor: "white" }}>
                 <div className="row">
                     <div className="col -8">
                         <h2 style={{ textAllign: 'center', color: 'white' }}>VISIT MARKETPLACE NOW!
@@ -43,9 +44,10 @@ const HomePage = () => {
                     </div>
                 </div>
             </div>
+            <div className="row" style={{ marginTop: '50px' }}></div>
             <div className='container'>
                 <div className='row'>
-                    <div className='col'>
+                    <div className='card bg-dark' style={{ borderColor: "white" }}>
                         <h1 style={{ color: 'white', textAlign: 'center' }}>What is Crypto?</h1>
                         <p style={{ color: 'white', textAlign: 'center' }}> A cryptocurrency, crypto-currency, crypto, or coin is a digital currency designed to work as a medium of exchange through a computer network that is not reliant on any central authority, such as a government or bank, to uphold or maintain it. Individual coin ownership records are stored in a digital ledger, which is a computerized database using strong cryptography to secure transaction records, to control the creation of additional coins, and to verify the transfer of coin ownership. Despite their name, cryptocurrencies are not considered to be currencies in the traditional sense and while varying treatments have been applied to them, including classification as commodities, securities, as well as currencies, cryptocurrencies are generally viewed as a distinct asset class in practice.</p>
                     </div>

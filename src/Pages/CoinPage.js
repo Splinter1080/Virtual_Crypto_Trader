@@ -22,8 +22,8 @@ const CoinPage = () => {
     const [orders, setOrders] = useState([]);
     const [limitPrice, setLimitPrice] = useState(0);
     const handleBuyClick = async () => {
-        console.log(investedValue / coin.market_data.current_price.usd, CoinName, investedValue, parseInt(coin.market_data.current_price.usd));
-        if (tradeType == "Market") {
+        //console.log(investedValue / coin.market_data.current_price.usd, CoinName, investedValue, parseInt(coin.market_data.current_price.usd));
+        if (tradeType == "Market" || (tradeType == "Limit" && limitPrice >= coin.market_data.current_price.usd)) {
             axios({
                 method: "POST",
                 data: {
@@ -31,6 +31,7 @@ const CoinPage = () => {
                     coinName: CoinName,
                     investedValue: investedValue,
                     price: parseInt(coin.market_data.current_price.usd),
+                    timePlaced: new Date(),
                 },
                 withCredentials: true,
                 url: "http://localhost:5000/buy",
@@ -54,11 +55,9 @@ const CoinPage = () => {
                 url: "http://localhost:5000/limit",
             })
         }
-
-
     }
     const handleSellClick = async () => {
-        if (tradeType == "Market") {
+        if (tradeType == "Market" || (tradeType == "Limit" && limitPrice <= coin.market_data.current_price.usd)) {
             axios({
                 method: "POST",
                 data: {
@@ -66,6 +65,7 @@ const CoinPage = () => {
                     coinName: CoinName,
                     sellMoney: sellMoney,
                     price: parseInt(coin.market_data.current_price.usd),
+                    timePlaced: new Date(),
                 },
                 withCredentials: true,
                 url: "http://localhost:5000/sell",
@@ -89,12 +89,8 @@ const CoinPage = () => {
                 url: "http://localhost:5000/limit",
             })
         }
-
-
-
     }
     const handleDetailClick = async () => {
-        //console.log("Getting details");
         axios({
             method: "GET",
             withCredentials: true,
@@ -148,6 +144,9 @@ const CoinPage = () => {
                                 <h4 style={{ color: "wheat" }}>Trade Type</h4>
                                 <div className="row">
                                     <div className="d-flex" style={{ width: "80%", float: "center" }}>
+                                        <h3>
+                                            Trade Type
+                                        </h3>
                                         <select className="form-control mr-2 gold" onChange={type => setTradeType(type.target.value)}>
                                             <option value="Market" >Market</option>
                                             <option value="Limit">Limit</option>
@@ -158,8 +157,12 @@ const CoinPage = () => {
                                     <h1 style={{ color: 'green' }}>Buy</h1>
                                     {
                                         tradeType == "Limit" &&
-                                        <input type="number" className="form-control" placeholder="Limit Price" onChange={(e) => setLimitPrice(e.target.value)} />
+                                        <>
+                                            <h5 style={{ color: "wheat" }}>LIMIT PRICE</h5>
+                                            <input type="number" className="form-control" placeholder="Limit Price" onChange={(e) => setLimitPrice(e.target.value)} />
+                                        </>
                                     }
+                                    <h5 style={{ color: "wheat" }}>AMOUNT</h5>
                                     <input
                                         placeholder="Amount"
                                         value={investedAmount}
@@ -175,6 +178,7 @@ const CoinPage = () => {
 
                                         }}
                                     />
+                                    <h5 style={{ color: "wheat" }}>TOTAL USD</h5>
                                     <input
                                         placeholder="Value in $"
                                         value={investedValue}
@@ -195,8 +199,12 @@ const CoinPage = () => {
                                     <h1 style={{ color: 'rgb(252, 27, 32)' }}>Sell</h1>
                                     {
                                         tradeType == "Limit" &&
-                                        <input type="number" className="form-control" placeholder="Limit Price" onChange={(e) => setLimitPrice(e.target.value)} />
+                                        <>
+                                            <h5 style={{ color: "wheat" }}>LIMIT PRICE</h5>
+                                            <input type="number" className="form-control" placeholder="Limit Price" onChange={(e) => setLimitPrice(e.target.value)} />
+                                        </>
                                     }
+                                    <h5 style={{ color: "wheat" }}>AMOUNT</h5>
                                     <input
                                         placeholder="Amount"
                                         value={sellAmount}
@@ -211,6 +219,7 @@ const CoinPage = () => {
                                             }
                                         }}
                                     ></input>
+                                    <h5 style={{ color: "wheat" }}>TOTAL USD</h5>
                                     <input
                                         placeholder="Value in $"
                                         value={sellMoney}

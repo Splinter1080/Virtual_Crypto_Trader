@@ -19,7 +19,7 @@ const RegisterPage = () => {
                 email: email
             },
             withCredentials: true,
-            url: "http://localhost:5000/register",
+            url: "https://vtback.herokuapp.com/register",
         }).then((res) => { console.log(res); setRegisterFlag(true) });
     };
 

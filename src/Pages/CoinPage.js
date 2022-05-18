@@ -34,7 +34,7 @@ const CoinPage = () => {
                     timePlaced: new Date(),
                 },
                 withCredentials: true,
-                url: "http://localhost:5000/buy",
+                url: "https://vtback.herokuapp.com/buy",
             }).then((res) => console.log(res));
         }
         else if (tradeType == "Limit") {
@@ -52,7 +52,7 @@ const CoinPage = () => {
                     orderCompleted: false,
                 },
                 withCredentials: true,
-                url: "http://localhost:5000/limit",
+                url: "https://vtback.herokuapp.com/limit",
             })
         }
     }
@@ -68,7 +68,7 @@ const CoinPage = () => {
                     timePlaced: new Date(),
                 },
                 withCredentials: true,
-                url: "http://localhost:5000/sell",
+                url: "https://vtback.herokuapp.com/sell",
             }).then((res) => console.log(res));
         }
         else if (tradeType == "Limit") {
@@ -86,7 +86,7 @@ const CoinPage = () => {
                     orderCompleted: false,
                 },
                 withCredentials: true,
-                url: "http://localhost:5000/limit",
+                url: "https://vtback.herokuapp.com/limit",
             })
         }
     }
@@ -94,7 +94,7 @@ const CoinPage = () => {
         axios({
             method: "GET",
             withCredentials: true,
-            url: `http://localhost:5000/limit/${CoinName}`,
+            url: `https://vtback.herokuapp.com/limit/${CoinName}`,
         }).then((res) => {
             setOrders(res.data);
             console.log(res.data);

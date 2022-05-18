@@ -9,7 +9,7 @@ const LeaderBoard = () => {
     const [search, setSearch] = useState("");
 
     const fetchLeaderBoard = async () => {
-        const { data } = await axios.get(`http://localhost:5000/leaderboard`)
+        const { data } = await axios.get(`https://vtback.herokuapp.com/leaderboard`)
             .catch((err) => {
                 console.log(err);
             });

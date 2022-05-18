@@ -10,7 +10,7 @@ function OrderList({ Coin }) {
         axios({
             method: "GET",
             withCredentials: true,
-            url: `http://localhost:5000/limit/${CoinName}`,
+            url: `https://vtback.herokuapp.com/limit/${CoinName}`,
         }).then((res) => {
             const { data } = res.data;
             console.log(res.data);

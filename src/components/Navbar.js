@@ -43,7 +43,7 @@ function Navbar() {
                         {
                             loginFlag &&
                             <div className="navbar-nav">
-                                <a className="navbar-nav nav nav-link float-end" href="http://localhost:5000/logout">Logout</a>
+                                <a className="navbar-nav nav nav-link float-end" href="https://vtback.herokuapp.com/logout">Logout</a>
                                 <a href="/profile" className="nav-link"><h2 style={{ color: 'rgb(118, 185, 0)', textAlign: 'center' }}>{username.toUpperCase()}</h2></a>
                             </div>
                         }

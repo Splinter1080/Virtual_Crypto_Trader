@@ -13,7 +13,7 @@ function ProfilePage() {
         Axios({
             method: "GET",
             withCredentials: true,
-            url: "http://localhost:5000/user",
+            url: "https://vtback.herokuapp.com/user",
         }).then((res) => {
             if (res.data.loggedIn) {
                 setUser(res.data);

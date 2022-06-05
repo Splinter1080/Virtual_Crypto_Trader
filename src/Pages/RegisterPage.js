@@ -2,8 +2,9 @@ import React from 'react';
 import { useState } from "react";
 import ReactDOM from 'react-dom';
 import Axios from 'axios';
-import Navbar from '../components/Navbar';
-
+import NavbarComponent from '../components/NavbarComponent';
+import { Container, Row, Col, Form, InputGroup, FormControl, Button, Card } from 'react-bootstrap';
+import { api } from '../config/api';
 
 const RegisterPage = () => {
     const [username, setUsername] = useState("");
@@ -19,15 +20,16 @@ const RegisterPage = () => {
                 email: email
             },
             withCredentials: true,
-            url: "https://vtback.herokuapp.com/register",
+            url: api.registerPost,
         }).then((res) => { console.log(res); setRegisterFlag(true) });
     };
 
 
     return (
         <>
-            <Navbar />
-            <div className='container'>
+            <NavbarComponent />
+            <br /><br />
+            <Container style={{ width: "500px" }}>
                 {
                     registerFlag &&
                     <div className='alert alert-success' role='alert'>
@@ -39,35 +41,28 @@ const RegisterPage = () => {
                 }
                 {
                     !registerFlag &&
-                    <div className="col-6" style={{ alignItems: 'center' }}>
-                        <h1 className='row postion-absolute ' style={{ color: 'rgb(118,185,0)' }}>Login</h1>
-
-                        <div className="row" style={{ marginTop: '70px' }}></div>
-                        <input
-                            className='row '
-                            placeholder="username"
-                            style={{ textAlign: 'center', alignItems: 'center' }}
-                            onChange={(e) => setUsername(e.target.value)}
-                        />
-                        <div className="row" style={{ marginTop: '20px' }}></div>
-                        <input
-                            className='row'
-                            placeholder="password"
-                            style={{ textAlign: 'center', alignItems: 'center' }}
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
-                        <div className="row" style={{ marginTop: '20px' }}></div>
-                        <input
-                            className='row'
-                            placeholder="email"
-                            style={{ textAlign: 'center', alignItems: 'center' }}
-                            onChange={(e) => setEmail(e.target.value)}
-                        />
-                        <div className="row" style={{ marginTop: '20px' }}></div>
-                        <button className='row' onClick={register}>Submit</button>
-                    </div>
+                    <Card className="text-center bg-dark border-light text-white justify-content-center" >
+                        <Card.Header className="bg-transparent border-light" style={{ fontWeight: "bold", fontSize: "50px", color: 'rgb(118,185,0)' }}>Register</Card.Header>
+                        <Card.Body className="bg-transparent border-light" >
+                            <Form>
+                                <Form.Group className="mb-3 mx-3 justify-content-center" controlId="formGroupEmail">
+                                    <Form.Label>USERNAME</Form.Label>
+                                    <Form.Control type="username" placeholder="Enter username" onChange={(e) => setUsername(e.target.value)} required />
+                                </Form.Group>
+                                <Form.Group className="mb-3 mx-3 justify-content-center" controlId="formGroupPassword">
+                                    <Form.Label>PASSWORD</Form.Label>
+                                    <Form.Control type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} required />
+                                </Form.Group>
+                                <Form.Group className="mb-3 mx-3 justify-content-center" controlId="formGroupPassword">
+                                    <Form.Label>EMAIL</Form.Label>
+                                    <Form.Control type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} required />
+                                </Form.Group>
+                                <Button type="submit" variant="success" onClick={register}>Submit</Button>
+                            </Form>
+                        </Card.Body>
+                    </Card>
                 }
-            </div>
+            </Container>
 
         </>
 

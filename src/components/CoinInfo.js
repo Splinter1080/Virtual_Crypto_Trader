@@ -5,6 +5,7 @@ import { Line } from "react-chartjs-2";
 import Chart from 'chart.js/auto'
 import SelectButton from "./SelectButton";
 import { chartDays } from "../config/data";
+import { Container, Row, Col, Form, InputGroup, FormControl, Button } from 'react-bootstrap';
 
 const CoinInfo = ({ Coin }) => {
     const [historicData, setHistoricData] = useState();
@@ -39,7 +40,7 @@ const CoinInfo = ({ Coin }) => {
 
 
     return (
-        <div className="container">
+        <Container>
             {!historicData || flag == false ? (
                 <div className="loader">
                     <div className="loader__inner"></div>
@@ -73,22 +74,24 @@ const CoinInfo = ({ Coin }) => {
                             },
                         }}
                     />
-                    <div className="container">
-                        <div className="row">
-                            <div className="d-flex" style={{ width: "20%", float: "center" }}>
-                                <h4 style={{ color: "wheat" }}>Time Frame</h4>
-                                <select className="form-control mr-2 gold" onChange={day => ChangeDate(parseInt(day.target.value))}>
+                    <Container>
+                        <Row>
+                            <Col xs="auto">
+                                <h5 style={{ color: "wheat" }}>Time Frame</h5>
+                            </Col>
+                            <Col xs="auto">
+                                <Form.Select onChange={day => ChangeDate(parseInt(day.target.value))} style={{ width: "250px" }}>
                                     <option value="1" >1 Day</option>
                                     <option value="30">30 Days</option>
                                     <option value="365">365 Days</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
+                                </Form.Select>
+                            </Col>
+                        </Row>
+                    </Container>
                 </>
             )}
 
-        </div>
+        </Container>
     )
 };
 

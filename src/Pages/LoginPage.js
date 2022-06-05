@@ -3,9 +3,10 @@ import { useState } from "react";
 import ReactDOM from 'react-dom';
 import Axios from 'axios';
 import { makeStyles } from '@mui/material';
-import Navbar from '../components/Navbar';
+import NavbarComponent from '../components/NavbarComponent';
 import { useHistory } from "react-router-dom";
-
+import { Container, Row, Col, Form, InputGroup, FormControl, Button, Card } from 'react-bootstrap';
+import { api } from '../config/api';
 const LoginPage = () => {
     const [LoginUsername, setLoginUsername] = useState("");
     const [email, setEmail] = useState("");
@@ -14,25 +15,35 @@ const LoginPage = () => {
     const [loginFlag, setLoginFlag] = useState(false);
     const history = useHistory();
     const login = () => {
-        Axios({
-            method: "POST",
-            data: {
-                username: LoginUsername,
-                password: LoginPassword,
-            },
-            withCredentials: true,
-            url: "https://vtback.herokuapp.com/login",
-        }).then((res) => {
-            console.log(res.data);
-            setUserName(res.data.username);
-            setLoginFlag(true);
-        });
+        try {
+            Axios({
+                method: "POST",
+                data: {
+                    username: LoginUsername,
+                    password: LoginPassword,
+                },
+                withCredentials: true,
+                url: api.loginPost,
+            }).then((res) => {
+                setLoginUsername("");
+                setLoginPassword("");
+                console.log(res.data);
+                setUserName(res.data.username);
+                setLoginFlag(true);
+            }).catch((err) => {
+                console.log("HELLO", err);
+            });
+        }
+        catch (err) {
+            console.log(err);
+        }
     };
 
     return (
         <>
-            <Navbar />
-            <div className='container'>
+            <NavbarComponent />
+            <br /><br />
+            <Container style={{ width: "450px" }}>
                 {
                     loginFlag &&
                     <div className='alert alert-success' role='alert'>
@@ -41,33 +52,29 @@ const LoginPage = () => {
                         <hr />
                         <p className='mb-0'>Click Here to go <a href="/">HOME PAGE!</a></p>
                     </div>
-
                 }
                 {
                     !loginFlag &&
-                    <div className="col-6" style={{ alignItems: 'center' }}>
-                        <h1 className='row postion-absolute ' style={{ color: 'rgb(118,185,0)' }}>Login</h1>
-
-                        <div className="row" style={{ marginTop: '70px' }}></div>
-                        <input
-                            className='row '
-                            placeholder="username"
-                            style={{ textAlign: 'center', alignItems: 'center' }}
-                            onChange={(e) => setLoginUsername(e.target.value)}
-                        />
-                        <div className="row" style={{ marginTop: '20px' }}></div>
-                        <input
-                            className='row'
-                            placeholder="password"
-                            style={{ textAlign: 'center', alignItems: 'center' }}
-                            onChange={(e) => setLoginPassword(e.target.value)}
-                        />
-                        <div className="row" style={{ marginTop: '20px' }}></div>
-                        <button className='row' onClick={login}>Submit</button>
-                    </div>
+                    <>
+                        <Card className="text-center bg-dark border-light text-white justify-content-center" >
+                            <Card.Header className="bg-transparent border-light" style={{ fontWeight: "bold", fontSize: "50px", color: 'rgb(118,185,0)' }}>Login</Card.Header>
+                            <Card.Body className="bg-transparent border-light" >
+                                <Form>
+                                    <Form.Group className="mb-3 mx-3 justify-content-center" controlId="formGroupEmail">
+                                        <Form.Label>USERNAME</Form.Label>
+                                        <Form.Control type="username" placeholder="Enter username" onChange={(e) => setLoginUsername(e.target.value)} required />
+                                    </Form.Group>
+                                    <Form.Group className="mb-3 mx-3 justify-content-center" controlId="formGroupPassword">
+                                        <Form.Label>PASSWORD</Form.Label>
+                                        <Form.Control type="password" placeholder="Password" onChange={(e) => setLoginPassword(e.target.value)} required />
+                                    </Form.Group>
+                                    <Button variant="success" onClick={login}>Submit</Button>
+                                </Form>
+                            </Card.Body>
+                        </Card>
+                    </>
                 }
-
-            </div>
+            </Container>
         </>
     )
 }

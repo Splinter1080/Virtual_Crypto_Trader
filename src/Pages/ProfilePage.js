@@ -1,9 +1,9 @@
 import React from 'react';
 import Axios from "axios";
 import { useEffect, useState } from "react";
-import Navbar from '../components/Navbar';
+import NavbarComponent from '../components/NavbarComponent';
 import { Dots, Waves, TrinitySpinner, MinimalSpinner, Spinner } from 'loading-animations-react';
-
+import { api } from '../config/api';
 function ProfilePage() {
     const [flag, setFlag] = useState(false);
     const [search, setSearch] = useState("");
@@ -13,7 +13,7 @@ function ProfilePage() {
         Axios({
             method: "GET",
             withCredentials: true,
-            url: "https://vtback.herokuapp.com/user",
+            url: api.userGet,
         }).then((res) => {
             if (res.data.loggedIn) {
                 setUser(res.data);
@@ -32,7 +32,7 @@ function ProfilePage() {
     }, []);
     return (
         <div className='container position-relative ' >
-            <Navbar />
+            <NavbarComponent />
             <h1 style={{ color: 'white', textAlign: 'center' }}>YOUR PROFILE</h1>
             {
                 flag &&

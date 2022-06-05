@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from "axios";
+import { api } from '../config/api';
 function OrderList({ Coin }) {
     const [orders, setOrders] = useState();
     const [flag, setFlag] = useState(false);
@@ -10,7 +11,7 @@ function OrderList({ Coin }) {
         axios({
             method: "GET",
             withCredentials: true,
-            url: `https://vtback.herokuapp.com/limit/${CoinName}`,
+            url: api.limitOrderGet + CoinName,
         }).then((res) => {
             const { data } = res.data;
             console.log(res.data);

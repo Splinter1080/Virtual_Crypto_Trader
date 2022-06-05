@@ -1,15 +1,17 @@
 import React from 'react';
 import axios from "axios";
 import { useEffect, useState } from "react";
-import Navbar from '../components/Navbar';
+import NavbarComponent from '../components/NavbarComponent';
 import { Dots, Waves, TrinitySpinner, MinimalSpinner, Spinner } from 'loading-animations-react';
+import { api } from '../config/api';
+
 const LeaderBoard = () => {
     const [flag, setflag] = useState(false);
     const [users, setUsers] = useState();
     const [search, setSearch] = useState("");
 
     const fetchLeaderBoard = async () => {
-        const { data } = await axios.get(`https://vtback.herokuapp.com/leaderboard`)
+        const { data } = await axios.get(api.leaderboardGet)
             .catch((err) => {
                 console.log(err);
             });
@@ -27,8 +29,8 @@ const LeaderBoard = () => {
     }
     return (
         <div className='container position-relative ' >
-            <Navbar />
-            <nav class="navbar navbar-dark bg-dark" style={{ float: "right" }}>
+            <NavbarComponent />
+            <nav class="NavbarComponent NavbarComponent-dark bg-dark" style={{ float: "right" }}>
                 <form class="form-inline">
                     <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"
                         onChange={e => setSearch(e.target.value)} />

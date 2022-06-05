@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from "axios";
 import { useEffect, useState } from "react";
-import Navbar from '../components/Navbar';
+import NavbarComponent from '../components/NavbarComponent';
 
 
 const MarketPlace = () => {
@@ -38,8 +38,8 @@ const MarketPlace = () => {
     }
     return (
         <div className='container position-relative ' >
-            <Navbar />
-            <nav class="navbar navbar-dark bg-dark" style={{ float: "right" }}>
+            <NavbarComponent />
+            <nav class="NavbarComponent NavbarComponent-dark bg-dark" style={{ float: "right" }}>
                 <form class="form-inline">
                     <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"
                         onChange={e => setSearch(e.target.value)} />

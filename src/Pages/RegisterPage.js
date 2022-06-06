@@ -11,19 +11,35 @@ const RegisterPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [registerFlag, setRegisterFlag] = useState("");
+    const [invalid, setInvalid] = useState(false);
     const register = () => {
-        Axios({
-            method: "POST",
-            data: {
-                username: username,
-                password: password,
-                email: email
-            },
-            withCredentials: true,
-            url: api.registerPost,
-        }).then((res) => { console.log(res); setRegisterFlag(true) });
+        try {
+            Axios({
+                method: "POST",
+                data: {
+                    username: username,
+                    password: password,
+                    email: email
+                },
+                withCredentials: true,
+                url: api.registerPost,
+            }).then((res) => {
+                setInvalid(false);
+                setUsername("");
+                setPassword("");
+                setEmail("");
+                console.log(res.data);
+                setRegisterFlag(true);
+            }).catch((err) => {
+                setInvalid(true);
+                console.log("HELLO", err);
+            });
+        }
+        catch (err) {
+            setInvalid(true);
+            console.log(err);
+        }
     };
-
 
     return (
         <>
@@ -57,13 +73,19 @@ const RegisterPage = () => {
                                     <Form.Label>EMAIL</Form.Label>
                                     <Form.Control type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} required />
                                 </Form.Group>
-                                <Button type="submit" variant="success" onClick={register}>Submit</Button>
+                                <Button variant="success" onClick={register}>Submit</Button>
                             </Form>
                         </Card.Body>
                     </Card>
                 }
             </Container>
-
+            {
+                invalid &&
+                <div className='alert alert-danger' role='alert'>
+                    <h4 className='alert-heading'>User Already Exists!</h4>
+                    <p className='mb-0'>Try Again</p>
+                </div>
+            }
         </>
 
     )

@@ -4,13 +4,12 @@ import axios from 'axios';
 import { useHistory, useParams } from "react-router-dom";
 import CoinInfo from '../components/CoinInfo';
 import NavbarComponent from '../components/NavbarComponent';
-import { Container, Row, Col, Form, InputGroup, FormControl, Button } from 'react-bootstrap';
+import { Container, Row, Col, Form, InputGroup, FormControl, Button, Alert } from 'react-bootstrap';
 import { api } from '../config/api';
 
 const CoinPage = () => {
-    const history = useHistory();
+
     const { CoinName } = useParams();
-    const currency = "USD";
     const [coin, setCoin] = useState();
     const [flag, setFlag] = useState(false);
     const [investedAmount, setInvestedAmount] = useState(0);
@@ -20,6 +19,13 @@ const CoinPage = () => {
     const [tradeType, setTradeType] = useState("Market");
     const [orders, setOrders] = useState([]);
     const [limitPrice, setLimitPrice] = useState(0);
+
+
+    const [errMessage, setErrMessage] = useState("");
+    const [errFlag, setErrFlag] = useState(false);
+    const [successFlag, setSuccessFlag] = useState(false);
+    const [successMessage, setSuccessMessage] = useState("");
+
     const handleBuyClick = async () => {
 
         if (tradeType == "Market" || (tradeType == "Limit" && limitPrice >= coin.market_data.current_price.usd)) {
@@ -34,7 +40,19 @@ const CoinPage = () => {
                 },
                 withCredentials: true,
                 url: api.buyPost,
-            }).then((res) => console.log(res));
+            })
+                .then((res) => {
+                    setErrFlag(false);
+                    setSuccessFlag(true);
+                    setSuccessMessage(res.data);
+                    console.log(res.data);
+                })
+                .catch((err) => {
+                    setErrMessage(err.response.data);
+                    setErrFlag(true);
+                    setSuccessFlag(false);
+                    console.log(errMessage);
+                });
         }
         else if (tradeType == "Limit") {
             console.log("limit");
@@ -52,7 +70,18 @@ const CoinPage = () => {
                 },
                 withCredentials: true,
                 url: api.limitPost,
+            }).then((res) => {
+                setErrFlag(false);
+                setSuccessFlag(true);
+                setSuccessMessage(res.data);
+                console.log(res.data);
             })
+                .catch((err) => {
+                    setErrMessage(err.response.data);
+                    setErrFlag(true);
+                    setSuccessFlag(false);
+                    console.log(errMessage);
+                });
         }
     }
     const handleSellClick = async () => {
@@ -68,7 +97,18 @@ const CoinPage = () => {
                 },
                 withCredentials: true,
                 url: api.sellPost,
-            }).then((res) => console.log(res));
+            }).then((res) => {
+                setErrFlag(false);
+                setSuccessFlag(true);
+                setSuccessMessage(res.data);
+                console.log(res.data);
+            })
+                .catch((err) => {
+                    setErrMessage(err.response.data);
+                    setErrFlag(true);
+                    setSuccessFlag(false);
+                    console.log(errMessage);
+                });
         }
         else if (tradeType == "Limit") {
             console.log("limit");
@@ -86,7 +126,18 @@ const CoinPage = () => {
                 },
                 withCredentials: true,
                 url: api.limitPost,
+            }).then((res) => {
+                setErrFlag(false);
+                setSuccessFlag(true);
+                setSuccessMessage(res.data);
+                console.log(res.data);
             })
+                .catch((err) => {
+                    setErrMessage(err.response.data);
+                    setErrFlag(true);
+                    setSuccessFlag(false);
+                    console.log(errMessage);
+                });
         }
     }
     const handleDetailClick = async () => {
@@ -94,11 +145,18 @@ const CoinPage = () => {
             method: "GET",
             withCredentials: true,
             url: api.limitOrderGet + CoinName,
-        }).then((res) => {
-            setOrders(res.data);
-            console.log(res.data);
-            console.log(orders);
-        });
+        })
+            .then((res) => {
+                setOrders(res.data);
+                console.log(res.data);
+                console.log(orders);
+            })
+            .catch((err) => {
+                setErrMessage(err.response.data);
+                setErrFlag(true);
+                setSuccessFlag(false);
+                console.log(errMessage);
+            });
     }
 
     const fetchCoin = async () => {
@@ -124,6 +182,24 @@ const CoinPage = () => {
 
         <Container>
             <NavbarComponent />
+            {
+                errFlag &&
+                <Alert variant="danger" onClose={() => { setSuccessFlag(false); setErrFlag(false) }} dismissible>
+                    <Alert.Heading>Oh snap! You got an error!</Alert.Heading>
+                    <p>
+                        {errMessage}
+                    </p>
+                </Alert>
+            }
+            {
+                successFlag &&
+                <Alert variant="success" onClose={() => { setSuccessFlag(false); setErrFlag(false) }} dismissible>
+                    <Alert.Heading>Success !</Alert.Heading>
+                    <p>
+                        {successMessage}
+                    </p>
+                </Alert>
+            }
             {
                 flag &&
                 <>

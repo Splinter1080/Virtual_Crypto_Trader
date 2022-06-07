@@ -10,22 +10,25 @@ function ProfilePage() {
     const [user, setUser] = useState();
     const [assets, setAssets] = useState();
     const getUser = () => {
-        Axios({
-            method: "GET",
-            withCredentials: true,
-            url: api.userGet,
-        }).then((res) => {
-            if (res.data.loggedIn) {
-                setUser(res.data);
-                setAssets(res.data.assets);
-                setFlag(true);
-                console.log(res.data);
-            }
-            else {
-                setFlag(false);
-                console.log(res.data);
-            }
-        });
+        if (localStorage.getItem("loggedIn") === "true") {
+            Axios({
+                method: "GET",
+                withCredentials: true,
+                url: api.userGet + localStorage.getItem("userId"),
+            }).then((res) => {
+                if (res.data.loggedIn) {
+                    setUser(res.data);
+                    setAssets(res.data.assets);
+                    setFlag(true);
+                    console.log(res.data);
+                }
+                else {
+                    setFlag(false);
+                    console.log(res.data);
+                }
+            });
+        }
+
     };
     useEffect(() => {
         getUser();

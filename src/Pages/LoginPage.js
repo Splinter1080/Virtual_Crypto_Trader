@@ -27,6 +27,10 @@ const LoginPage = () => {
             }).then((res) => {
                 setLoginUsername("");
                 setLoginPassword("");
+                localStorage.setItem("userId", res.data._id);
+                localStorage.setItem("name", res.data.username);
+                localStorage.setItem("email", res.data.email);
+                localStorage.setItem("loggedIn", true);
                 console.log(res.data);
                 setUserName(res.data.username);
                 setLoginFlag(true);

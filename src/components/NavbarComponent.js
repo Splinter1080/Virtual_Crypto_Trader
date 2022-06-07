@@ -6,20 +6,30 @@ function NavbarComponent() {
     const [username, setUsername] = useState(null);
     const [loginFlag, setLoginFlag] = useState(false);
     const getUser = () => {
-        Axios({
-            method: "GET",
-            withCredentials: true,
-            url: api.userGet,
-        }).then((res) => {
-            if (res.data.loggedIn) {
-                setUsername(res.data.username);
-                setLoginFlag(true);
-            }
-            else {
-                setLoginFlag(false);
-            }
-        });
+        if (localStorage.getItem("loggedIn") === "true") {
+            Axios({
+                method: "GET",
+                withCredentials: true,
+                url: api.userGet + localStorage.getItem("userId"),
+            }).then((res) => {
+                if (res.data.loggedIn) {
+                    setUsername(res.data.username);
+                    setLoginFlag(true);
+                }
+                else {
+                    setLoginFlag(false);
+                }
+            });
+        }
+
     };
+    const logoutUser = () => {
+        localStorage.setItem("loggedIn", false);
+        localStorage.removeItem("userId");
+        localStorage.removeItem("username");
+        localStorage.removeItem("email");
+        setLoginFlag(false);
+    }
     useEffect(() => {
         getUser();
     }, [loginFlag]);
@@ -51,7 +61,7 @@ function NavbarComponent() {
                             <Nav className="justify-content-end">
                                 <NavDropdown title={username.toUpperCase()} id="basic-nav-dropdown">
                                     <NavDropdown.Item href="/profile">View Profile</NavDropdown.Item>
-                                    <NavDropdown.Item href={api.logoutGet}>Logout</NavDropdown.Item>
+                                    <NavDropdown.Item onClick={logoutUser} >Logout</NavDropdown.Item>
                                 </NavDropdown>
                             </Nav>
                         }

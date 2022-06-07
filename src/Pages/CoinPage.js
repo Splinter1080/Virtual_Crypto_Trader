@@ -27,25 +27,138 @@ const CoinPage = () => {
     const [successMessage, setSuccessMessage] = useState("");
 
     const handleBuyClick = async () => {
-
-        if (tradeType == "Market" || (tradeType == "Limit" && limitPrice >= coin.market_data.current_price.usd)) {
-            axios({
-                method: "POST",
-                data: {
-                    amount: investedValue / coin.market_data.current_price.usd,
-                    coinName: CoinName,
-                    investedValue: investedValue,
-                    price: parseInt(coin.market_data.current_price.usd),
-                    timePlaced: new Date(),
-                },
-                withCredentials: true,
-                url: api.buyPost,
-            })
-                .then((res) => {
+        if (localStorage.getItem("loggedIn") === "true") {
+            if (tradeType == "Market" || (tradeType == "Limit" && limitPrice >= coin.market_data.current_price.usd)) {
+                axios({
+                    method: "POST",
+                    data: {
+                        amount: investedValue / coin.market_data.current_price.usd,
+                        coinName: CoinName,
+                        investedValue: investedValue,
+                        price: parseInt(coin.market_data.current_price.usd),
+                        timePlaced: new Date(),
+                    },
+                    withCredentials: true,
+                    url: api.buyPost + localStorage.getItem("userId"),
+                })
+                    .then((res) => {
+                        setErrFlag(false);
+                        setSuccessFlag(true);
+                        setSuccessMessage(res.data);
+                        console.log(res.data);
+                    })
+                    .catch((err) => {
+                        setErrMessage(err.response.data);
+                        setErrFlag(true);
+                        setSuccessFlag(false);
+                        console.log(errMessage);
+                    });
+            }
+            else if (tradeType == "Limit") {
+                console.log("limit");
+                axios({
+                    method: "POST",
+                    data: {
+                        coinName: CoinName,
+                        amount: investedAmount,
+                        price: limitPrice,
+                        investedValue: investedValue,
+                        orderCompleted: false,
+                        type: "Buy",
+                        timePlaced: new Date(),
+                        orderCompleted: false,
+                    },
+                    withCredentials: true,
+                    url: api.limitPost + localStorage.getItem("userId"),
+                }).then((res) => {
                     setErrFlag(false);
                     setSuccessFlag(true);
                     setSuccessMessage(res.data);
                     console.log(res.data);
+                })
+                    .catch((err) => {
+                        setErrMessage(err.response.data);
+                        setErrFlag(true);
+                        setSuccessFlag(false);
+                        console.log(errMessage);
+                    });
+            }
+        } else {
+            setErrMessage("Please login to buy");
+            setErrFlag(true);
+            setSuccessFlag(false);
+        }
+    }
+    const handleSellClick = async () => {
+        if (localStorage.getItem("loggedIn") === "true") {
+            if (tradeType == "Market" || (tradeType == "Limit" && limitPrice <= coin.market_data.current_price.usd)) {
+                axios({
+                    method: "POST",
+                    data: {
+                        amount: sellMoney / coin.market_data.current_price.usd,
+                        coinName: CoinName,
+                        sellMoney: sellMoney,
+                        price: parseInt(coin.market_data.current_price.usd),
+                        timePlaced: new Date(),
+                    },
+                    withCredentials: true,
+                    url: api.sellPost + localStorage.getItem("userId"),
+                }).then((res) => {
+                    setErrFlag(false);
+                    setSuccessFlag(true);
+                    setSuccessMessage(res.data);
+                    console.log(res.data);
+                })
+                    .catch((err) => {
+                        setErrMessage(err.response.data);
+                        setErrFlag(true);
+                        setSuccessFlag(false);
+                        console.log(errMessage);
+                    });
+            }
+            else if (tradeType == "Limit") {
+                console.log("limit");
+                axios({
+                    method: "POST",
+                    data: {
+                        coinName: CoinName,
+                        amount: investedAmount,
+                        price: limitPrice,
+                        investedValue: investedValue,
+                        orderCompleted: false,
+                        type: "Sell",
+                        timePlaced: new Date(),
+                        orderCompleted: false,
+                    },
+                    withCredentials: true,
+                    url: api.limitPost + localStorage.getItem("userId"),
+                }).then((res) => {
+                    setErrFlag(false);
+                    setSuccessFlag(true);
+                    setSuccessMessage(res.data);
+                    console.log(res.data);
+                })
+                    .catch((err) => {
+                        setErrMessage(err.response.data);
+                        setErrFlag(true);
+                        setSuccessFlag(false);
+                        console.log(errMessage);
+                    });
+            }
+        }
+
+    }
+    const handleDetailClick = async () => {
+        if (localStorage.getItem("loggedIn") === "true") {
+            axios({
+                method: "GET",
+                withCredentials: true,
+                url: api.limitOrderGet + CoinName + "?user_id=" + localStorage.getItem("userId"),
+            })
+                .then((res) => {
+                    setOrders(res.data);
+                    console.log(res.data);
+                    console.log(orders);
                 })
                 .catch((err) => {
                     setErrMessage(err.response.data);
@@ -54,109 +167,11 @@ const CoinPage = () => {
                     console.log(errMessage);
                 });
         }
-        else if (tradeType == "Limit") {
-            console.log("limit");
-            axios({
-                method: "POST",
-                data: {
-                    coinName: CoinName,
-                    amount: investedAmount,
-                    price: limitPrice,
-                    investedValue: investedValue,
-                    orderCompleted: false,
-                    type: "Buy",
-                    timePlaced: new Date(),
-                    orderCompleted: false,
-                },
-                withCredentials: true,
-                url: api.limitPost,
-            }).then((res) => {
-                setErrFlag(false);
-                setSuccessFlag(true);
-                setSuccessMessage(res.data);
-                console.log(res.data);
-            })
-                .catch((err) => {
-                    setErrMessage(err.response.data);
-                    setErrFlag(true);
-                    setSuccessFlag(false);
-                    console.log(errMessage);
-                });
+        else {
+            setErrMessage("Please login to view");
+            setErrFlag(true);
+            setSuccessFlag(false);
         }
-    }
-    const handleSellClick = async () => {
-        if (tradeType == "Market" || (tradeType == "Limit" && limitPrice <= coin.market_data.current_price.usd)) {
-            axios({
-                method: "POST",
-                data: {
-                    amount: sellMoney / coin.market_data.current_price.usd,
-                    coinName: CoinName,
-                    sellMoney: sellMoney,
-                    price: parseInt(coin.market_data.current_price.usd),
-                    timePlaced: new Date(),
-                },
-                withCredentials: true,
-                url: api.sellPost,
-            }).then((res) => {
-                setErrFlag(false);
-                setSuccessFlag(true);
-                setSuccessMessage(res.data);
-                console.log(res.data);
-            })
-                .catch((err) => {
-                    setErrMessage(err.response.data);
-                    setErrFlag(true);
-                    setSuccessFlag(false);
-                    console.log(errMessage);
-                });
-        }
-        else if (tradeType == "Limit") {
-            console.log("limit");
-            axios({
-                method: "POST",
-                data: {
-                    coinName: CoinName,
-                    amount: investedAmount,
-                    price: limitPrice,
-                    investedValue: investedValue,
-                    orderCompleted: false,
-                    type: "Sell",
-                    timePlaced: new Date(),
-                    orderCompleted: false,
-                },
-                withCredentials: true,
-                url: api.limitPost,
-            }).then((res) => {
-                setErrFlag(false);
-                setSuccessFlag(true);
-                setSuccessMessage(res.data);
-                console.log(res.data);
-            })
-                .catch((err) => {
-                    setErrMessage(err.response.data);
-                    setErrFlag(true);
-                    setSuccessFlag(false);
-                    console.log(errMessage);
-                });
-        }
-    }
-    const handleDetailClick = async () => {
-        axios({
-            method: "GET",
-            withCredentials: true,
-            url: api.limitOrderGet + CoinName,
-        })
-            .then((res) => {
-                setOrders(res.data);
-                console.log(res.data);
-                console.log(orders);
-            })
-            .catch((err) => {
-                setErrMessage(err.response.data);
-                setErrFlag(true);
-                setSuccessFlag(false);
-                console.log(errMessage);
-            });
     }
 
     const fetchCoin = async () => {

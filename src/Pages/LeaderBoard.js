@@ -11,10 +11,29 @@ const LeaderBoard = () => {
     const [search, setSearch] = useState("");
 
     const fetchLeaderBoard = async () => {
-        const { data } = await axios.get(api.leaderboardGet)
-            .catch((err) => {
-                console.log(err);
-            });
+        // const { data } = await axios.get(api.leaderboardGet)
+        //     .catch((err) => {
+        //         console.log(err);
+        //     });
+        //placeholder for leaderboard
+        // const data = [
+        var data = [
+            {
+                "id": 1,
+                "username": "Supreet Joshi",
+                "currentValue": "$ 10000.98"
+            },
+            {
+                "id": 2,
+                "username": "Akhil P",
+                "currentValue": "$ 9300.64"
+            },
+            {
+                "id": 3,
+                "username": "Xavier",
+                "currentValue": "$ 9200.37"
+            },
+        ];
         setUsers(data);
         setflag(true);
         console.log(data);

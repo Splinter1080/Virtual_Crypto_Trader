@@ -6,8 +6,6 @@ Made using MERN stack and bootstrap is used for front-end design .
 
 Backend link - [Splinter1080/vt_back](https://github.com/Splinter1080/vt_back)
 
-Hosted Link - [Netlify](https://virtual-crypto-trader.netlify.app/)
-
 ## Available Scripts
 
 In the project directory, you can run:
